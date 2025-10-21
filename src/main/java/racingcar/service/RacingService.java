@@ -3,16 +3,19 @@ package racingcar.service;
 import java.util.List;
 import racingcar.domain.Car;
 import racingcar.util.CarNameParser;
+import racingcar.util.RandomNumberGenerator;
 import racingcar.view.OutputView;
 
 public class RacingService {
 
     private final OutputView outputView;
     private final CarNameParser carNameParser;
+    private final RandomNumberGenerator randomNumberGenerator;
 
-    public RacingService(OutputView outputView, CarNameParser carNameParser) {
+    public RacingService(OutputView outputView, CarNameParser carNameParser, RandomNumberGenerator randomNumberGenerator) {
         this.outputView = outputView;
         this.carNameParser = carNameParser;
+        this.randomNumberGenerator = randomNumberGenerator;
     }
 
     // 경주를 시작하는 메인 메소드
@@ -45,7 +48,7 @@ public class RacingService {
     // 각 자동차마다 무작위 값으로 전진 여부 판단
     private void moveCars(List<Car> cars) {
         for (Car car : cars) {
-            int randomNumber = 4;
+            int randomNumber = randomNumberGenerator.getNumber();
             car.moveForward(randomNumber);
             outputView.printCarMove(car);
         }
