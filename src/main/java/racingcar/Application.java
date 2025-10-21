@@ -1,9 +1,11 @@
 package racingcar;
 
+import java.util.Arrays;
 import java.util.List;
 import racingcar.domain.Car;
 import racingcar.util.CarNameParser;
 import racingcar.view.InputView;
+import racingcar.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
@@ -21,5 +23,11 @@ public class Application {
 
         Car firstCar = carList.getFirst();
         firstCar.moveForward(5);
+
+        OutputView outputView = new OutputView();
+        outputView.printResultHeader();
+        carList.forEach(outputView::printCarMove);
+
+        outputView.printWinner(Arrays.asList("pobi", "jun"));
     }
 }
