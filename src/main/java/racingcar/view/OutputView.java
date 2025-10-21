@@ -14,7 +14,7 @@ public class OutputView {
 
     public void printCarMove(Car car) {
         String track = "-".repeat(car.getDistance());
-        System.out.println(car.getName() + " \t: " + track);
+        System.out.println(car.getName() + " : " + track);
     }
 
     public void printWinner(List<String> winners) {
