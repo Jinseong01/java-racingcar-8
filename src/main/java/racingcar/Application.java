@@ -3,6 +3,7 @@ package racingcar;
 import racingcar.service.RacingService;
 import racingcar.util.CarNameParser;
 import racingcar.util.RandomNumberGenerator;
+import racingcar.util.TryCountParser;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -15,8 +16,9 @@ public class Application {
 
         OutputView outputView = new OutputView();
         CarNameParser carNameParser = new CarNameParser();
+        TryCountParser tryCountParser = new TryCountParser();
         RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
-        RacingService racingService = new RacingService(outputView, carNameParser, randomNumberGenerator);
+        RacingService racingService = new RacingService(outputView, carNameParser, randomNumberGenerator, tryCountParser);
         racingService.startRace(carNamesInput, tryCountInput);
     }
 }

@@ -4,24 +4,30 @@ import java.util.List;
 import racingcar.domain.Car;
 import racingcar.util.CarNameParser;
 import racingcar.util.RandomNumberGenerator;
+import racingcar.util.TryCountParser;
 import racingcar.view.OutputView;
 
 public class RacingService {
 
     private final OutputView outputView;
     private final CarNameParser carNameParser;
+    private final TryCountParser tryCountParser;
     private final RandomNumberGenerator randomNumberGenerator;
 
-    public RacingService(OutputView outputView, CarNameParser carNameParser, RandomNumberGenerator randomNumberGenerator) {
+    public RacingService(OutputView outputView, CarNameParser carNameParser,
+                         RandomNumberGenerator randomNumberGenerator, TryCountParser tryCountParser) {
         this.outputView = outputView;
         this.carNameParser = carNameParser;
+        this.tryCountParser = tryCountParser;
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
     // 경주를 시작하는 메인 메소드
     public void startRace(String carNamesInput, String tryCountInput) {
-        List<Car> cars = createCarList(carNamesInput);
-        int tryCount = Integer.parseInt(tryCountInput);
+        List<String> carNames = carNameParser.parse(carNamesInput);
+        int tryCount = tryCountParser.parse(tryCountInput);
+
+        List<Car> cars = createCars(carNames);
 
         outputView.printResultHeader();
         runRounds(cars, tryCount);
@@ -30,9 +36,9 @@ public class RacingService {
         outputView.printWinner(winners);
     }
 
-    // 입력받은 문자열을 파싱하여 자동차 객체 리스트 생성
-    private List<Car> createCarList(String carNamesInput) {
-        return carNameParser.parseCarNames(carNamesInput).stream()
+    // 문자열 리스트로 자동차 객체 리스트 생성
+    private List<Car> createCars(List<String> carNames) {
+        return carNames.stream()
                 .map(Car::new)
                 .toList();
     }
