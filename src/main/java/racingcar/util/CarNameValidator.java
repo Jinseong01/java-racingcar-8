@@ -1,5 +1,6 @@
 package racingcar.util;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class CarNameValidator {
@@ -12,6 +13,7 @@ public class CarNameValidator {
         validateMinCount(carNames);
         validateMaxCount(carNames);
         validateLength(carNames);
+        validateDuplicate(carNames);
     }
 
     private void validateMinCount(List<String> carNames) {
@@ -30,6 +32,15 @@ public class CarNameValidator {
         carNames.forEach(carName -> {
             if (carName.length() > MAX_NAME_LENGTH) {
                 throw new IllegalArgumentException("자동차 이름은 최대 " + MAX_NAME_LENGTH + "자까지 가능합니다.");
+            }
+        });
+    }
+
+    private void validateDuplicate(List<String> carNames) {
+        HashSet<String> set = new HashSet<>();
+        carNames.forEach(carName -> {
+            if (!set.add(carName)) {
+                throw new IllegalArgumentException("자동차 이름은 중복될 수 없습니다.");
             }
         });
     }
