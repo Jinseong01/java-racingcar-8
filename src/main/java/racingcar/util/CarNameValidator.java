@@ -6,10 +6,12 @@ public class CarNameValidator {
 
     private static final int MIN_CAR = 2;
     private static final int MAX_CAR = 10;
+    private static final int MAX_NAME_LENGTH = 5;
 
     public void validate(List<String> carNames) {
         validateMin(carNames);
         validateMax(carNames);
+        validateLength(carNames);
     }
 
     private void validateMin(List<String> carNames) {
@@ -22,5 +24,13 @@ public class CarNameValidator {
         if (carNames.size() > MAX_CAR) {
             throw new IllegalArgumentException("자동차는 최대 " + MAX_CAR + " 이하이어야 합니다");
         }
+    }
+
+    private void validateLength(List<String> carNames) {
+        carNames.forEach(carName -> {
+            if (carName.length() > MAX_NAME_LENGTH) {
+                throw new IllegalArgumentException("자동차 이름은 최대 " + MAX_NAME_LENGTH + "자까지 가능합니다.");
+            }
+        });
     }
 }
