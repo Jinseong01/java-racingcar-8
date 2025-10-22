@@ -23,13 +23,13 @@ public class CarNameParser {
 
     private void checkBlank(String input) {
         if (input.isBlank()) {
-            throw new IllegalArgumentException("자동차 이름 입력은 필수 입력 사항입니다.");
+            throw new IllegalArgumentException("자동차 이름으로 공백이 입력되었습니다.");
         }
     }
 
     private void checkTrim(String input) {
         if (!input.equals(input.trim())) {
-            throw new IllegalArgumentException("자동차 이름에 앞뒤 공백은 허용되지 않습니다.");
+            throw new IllegalArgumentException("자동차 이름 앞 또는 뒤에 공백이 입력되었습니다.");
         }
     }
 }

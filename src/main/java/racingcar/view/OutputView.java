@@ -5,11 +5,11 @@ import racingcar.domain.Car;
 
 public class OutputView {
 
-    private static final String OUTPUT_RESULT = "\n실행 결과";
-    private static final String OUTPUT_WINNER = "최종 우승자 : ";
+    private static final String OUTPUT_RESULT_MESSAGE = "\n실행 결과";
+    private static final String OUTPUT_WINNER_MESSAGE = "최종 우승자 : ";
 
     public void printResultHeader() {
-        System.out.println(OUTPUT_RESULT);
+        System.out.println(OUTPUT_RESULT_MESSAGE);
     }
 
     public void printCarMove(Car car) {
@@ -19,7 +19,7 @@ public class OutputView {
 
     public void printWinner(List<String> winners) {
         String winnerNames = String.join(", ", winners);
-        System.out.println(OUTPUT_WINNER + winnerNames);
+        System.out.println(OUTPUT_WINNER_MESSAGE + winnerNames);
     }
 
     public void printBlankLine() {
