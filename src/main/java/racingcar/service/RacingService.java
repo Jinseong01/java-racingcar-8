@@ -62,11 +62,11 @@ public class RacingService {
 
     // 각 자동차마다 전진 시도
     private void moveCars(List<Car> cars) {
-        for (Car car : cars) {
-            int randomNumber = randomNumberGenerator.getNumber();
+        cars.forEach(car -> {
+            int randomNumber = randomNumberGenerator.generate();
             car.moveForward(randomNumber);
             outputView.printCarMove(car);
-        }
+        });
     }
 
     // 경주 우승자 출력

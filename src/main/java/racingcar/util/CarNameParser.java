@@ -9,12 +9,12 @@ public class CarNameParser {
 
         List<String> carNames = Arrays.stream(input.split(",")).toList();
 
-        checkEachCarName(carNames);
+        checkEachName(carNames);
 
         return carNames;
     }
 
-    private void checkEachCarName(List<String> carNames) {
+    private void checkEachName(List<String> carNames) {
         carNames.forEach(carName -> {
             checkBlank(carName);
             checkTrim(carName);
