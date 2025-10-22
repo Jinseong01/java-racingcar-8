@@ -5,6 +5,7 @@ import racingcar.domain.Car;
 import racingcar.util.CarNameParser;
 import racingcar.util.RandomNumberGenerator;
 import racingcar.util.TryCountParser;
+import racingcar.util.TryCountValidator;
 import racingcar.view.OutputView;
 
 public class RacingService {
@@ -12,13 +13,15 @@ public class RacingService {
     private final OutputView outputView;
     private final CarNameParser carNameParser;
     private final TryCountParser tryCountParser;
+    private final TryCountValidator tryCountValidator;
     private final RandomNumberGenerator randomNumberGenerator;
 
-    public RacingService(OutputView outputView, CarNameParser carNameParser,
-                         RandomNumberGenerator randomNumberGenerator, TryCountParser tryCountParser) {
+    public RacingService(OutputView outputView, CarNameParser carNameParser, TryCountParser tryCountParser,
+                         TryCountValidator tryCountValidator, RandomNumberGenerator randomNumberGenerator) {
         this.outputView = outputView;
         this.carNameParser = carNameParser;
         this.tryCountParser = tryCountParser;
+        this.tryCountValidator = tryCountValidator;
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
@@ -26,6 +29,8 @@ public class RacingService {
     public void startRace(String carNamesInput, String tryCountInput) {
         List<String> carNames = carNameParser.parse(carNamesInput);
         int tryCount = tryCountParser.parse(tryCountInput);
+
+        tryCountValidator.validate(tryCount);
 
         List<Car> cars = createCars(carNames);
 

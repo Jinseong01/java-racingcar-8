@@ -4,6 +4,7 @@ import racingcar.service.RacingService;
 import racingcar.util.CarNameParser;
 import racingcar.util.RandomNumberGenerator;
 import racingcar.util.TryCountParser;
+import racingcar.util.TryCountValidator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -17,8 +18,10 @@ public class Application {
         OutputView outputView = new OutputView();
         CarNameParser carNameParser = new CarNameParser();
         TryCountParser tryCountParser = new TryCountParser();
+        TryCountValidator tryCountValidator = new TryCountValidator();
         RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
-        RacingService racingService = new RacingService(outputView, carNameParser, randomNumberGenerator, tryCountParser);
+        RacingService racingService = new RacingService(outputView, carNameParser, tryCountParser, tryCountValidator,
+                randomNumberGenerator);
         racingService.startRace(carNamesInput, tryCountInput);
     }
 }
