@@ -21,4 +21,8 @@ public class OutputView {
         String winnerNames = String.join(", ", winners);
         System.out.println(OUTPUT_WINNER + winnerNames);
     }
+
+    public void printBlankLine() {
+        System.out.println();
+    }
 }

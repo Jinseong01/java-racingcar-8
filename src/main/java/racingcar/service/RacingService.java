@@ -29,29 +29,28 @@ public class RacingService {
 
         List<Car> cars = createCars(carNames);
 
-        outputView.printResultHeader();
         runRounds(cars, tryCount);
 
-        List<String> winners = calculateWinners(cars);
-        outputView.printWinner(winners);
+        announceWinners(cars);
     }
 
-    // 문자열 리스트로 자동차 객체 리스트 생성
+    // 자동차 이름 리스트 자동차 객체 리스트 생성
     private List<Car> createCars(List<String> carNames) {
         return carNames.stream()
                 .map(Car::new)
                 .toList();
     }
 
-    // 입력받은 시도 횟수만큼 경주 라운드를 반복
+    // 시도 횟수만큼 경주 라운드 반복
     private void runRounds(List<Car> cars, int tryCount) {
+        outputView.printResultHeader();
         for (int i = 0; i < tryCount; i++) {
             moveCars(cars);
-            System.out.println();
+            outputView.printBlankLine();
         }
     }
 
-    // 각 자동차마다 무작위 값으로 전진 여부 판단
+    // 각 자동차마다 전진 시도
     private void moveCars(List<Car> cars) {
         for (Car car : cars) {
             int randomNumber = randomNumberGenerator.getNumber();
@@ -60,13 +59,26 @@ public class RacingService {
         }
     }
 
-    // 가장 멀리 간 자동차(들)의 이름을 리스트로 반환
-    private List<String> calculateWinners(List<Car> cars) {
-        int maxDistance = cars.stream().mapToInt(Car::getDistance).max().orElse(0);
+    // 경주 우승자 출력
+    private void announceWinners(List<Car> cars) {
+        List<String> winners = findWinners(cars);
+        outputView.printWinner(winners);
+    }
 
+    // 가장 멀리 간 자동차(들)의 이름 반환
+    private List<String> findWinners(List<Car> cars) {
+        int maxDistance = findMaxDistance(cars);
         return cars.stream()
                 .filter(car -> car.getDistance() == maxDistance)
                 .map(Car::getName)
                 .toList();
+    }
+
+    // 자동차들의 최대 이동 거리 반환
+    private int findMaxDistance(List<Car> cars) {
+        return cars.stream()
+                .mapToInt(Car::getDistance)
+                .max()
+                .orElse(0);
     }
 }
