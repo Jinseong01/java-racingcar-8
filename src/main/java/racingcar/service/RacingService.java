@@ -3,6 +3,7 @@ package racingcar.service;
 import java.util.List;
 import racingcar.domain.Car;
 import racingcar.util.CarNameParser;
+import racingcar.util.CarNameValidator;
 import racingcar.util.RandomNumberGenerator;
 import racingcar.util.TryCountParser;
 import racingcar.util.TryCountValidator;
@@ -13,14 +14,17 @@ public class RacingService {
     private final OutputView outputView;
     private final CarNameParser carNameParser;
     private final TryCountParser tryCountParser;
+    private final CarNameValidator carNameValidator;
     private final TryCountValidator tryCountValidator;
     private final RandomNumberGenerator randomNumberGenerator;
 
     public RacingService(OutputView outputView, CarNameParser carNameParser, TryCountParser tryCountParser,
-                         TryCountValidator tryCountValidator, RandomNumberGenerator randomNumberGenerator) {
+                         CarNameValidator carNameValidator, TryCountValidator tryCountValidator,
+                         RandomNumberGenerator randomNumberGenerator) {
         this.outputView = outputView;
         this.carNameParser = carNameParser;
         this.tryCountParser = tryCountParser;
+        this.carNameValidator = carNameValidator;
         this.tryCountValidator = tryCountValidator;
         this.randomNumberGenerator = randomNumberGenerator;
     }
@@ -30,6 +34,7 @@ public class RacingService {
         List<String> carNames = carNameParser.parse(carNamesInput);
         int tryCount = tryCountParser.parse(tryCountInput);
 
+        carNameValidator.validate(carNames);
         tryCountValidator.validate(tryCount);
 
         List<Car> cars = createCars(carNames);
