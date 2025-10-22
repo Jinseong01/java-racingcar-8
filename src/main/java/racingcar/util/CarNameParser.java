@@ -5,14 +5,31 @@ import java.util.List;
 
 public class CarNameParser {
     public List<String> parse(String input) {
-        checkEmpty(input);
+        checkBlank(input);
 
-        return Arrays.stream(input.split(",")).toList();
+        List<String> carNames = Arrays.stream(input.split(",")).toList();
+
+        checkEachCarName(carNames);
+
+        return carNames;
     }
 
-    private void checkEmpty(String input) {
+    private void checkEachCarName(List<String> carNames) {
+        carNames.forEach(carName -> {
+            checkBlank(carName);
+            checkTrim(carName);
+        });
+    }
+
+    private void checkBlank(String input) {
         if (input.isBlank()) {
-            throw new IllegalArgumentException("자동차 이름을 입력해야 합니다.");
+            throw new IllegalArgumentException("자동차 이름 입력은 필수 입력 사항입니다.");
+        }
+    }
+
+    private void checkTrim(String input) {
+        if (!input.equals(input.trim())) {
+            throw new IllegalArgumentException("자동차 이름에 앞뒤 공백은 허용되지 않습니다.");
         }
     }
 }
