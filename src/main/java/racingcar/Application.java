@@ -1,5 +1,6 @@
 package racingcar;
 
+import racingcar.controller.RacingController;
 import racingcar.service.RacingService;
 import racingcar.util.CarNameParser;
 import racingcar.util.CarNameValidator;
@@ -11,10 +12,7 @@ import racingcar.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
-        // TODO: 이후 수정
         InputView inputView = new InputView();
-        String carNamesInput = inputView.readCarName();
-        String tryCountInput = inputView.readTryCount();
 
         OutputView outputView = new OutputView();
         CarNameParser carNameParser = new CarNameParser();
@@ -25,6 +23,7 @@ public class Application {
         RacingService racingService = new RacingService(outputView, carNameParser, tryCountParser, carNameValidator,
                 tryCountValidator, randomNumberGenerator);
 
-        racingService.startRace(carNamesInput, tryCountInput);
+        RacingController racingController = new RacingController(inputView, racingService);
+        racingController.run();
     }
 }
