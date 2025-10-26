@@ -2,6 +2,8 @@ package racingcar.domain;
 
 public class Car {
 
+    private static final int MOVE_THRESHOLD = 4;
+
     private final String name;
     private int distance;
 
@@ -19,7 +21,7 @@ public class Car {
     }
 
     public void moveForward(int num) {
-        if (num >= 4) {
+        if (num >= MOVE_THRESHOLD) {
             distance++;
         }
     }
