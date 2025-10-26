@@ -2,6 +2,7 @@ package racingcar;
 
 import racingcar.controller.RacingController;
 import racingcar.factory.RaceFactory;
+import racingcar.service.RacingService;
 import racingcar.util.CarNameParser;
 import racingcar.util.CarNameValidator;
 import racingcar.util.InputProcessor;
@@ -15,6 +16,7 @@ public class Application {
     public static void main(String[] args) {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
+        RaceFactory raceFactory = new RaceFactory();
 
         CarNameParser carNameParser = new CarNameParser();
         TryCountParser tryCountParser = new TryCountParser();
@@ -23,11 +25,11 @@ public class Application {
         InputProcessor inputProcessor = new InputProcessor(carNameParser, carNameValidator, tryCountParser,
                 tryCountValidator);
 
-        RaceFactory raceFactory = new RaceFactory();
         RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
+        RacingService racingService = new RacingService(randomNumberGenerator);
 
-        RacingController racingController = new RacingController(inputView, outputView, inputProcessor, raceFactory,
-                randomNumberGenerator);
+        RacingController racingController = new RacingController(inputView, outputView, raceFactory, inputProcessor,
+                racingService);
         racingController.run();
     }
 }

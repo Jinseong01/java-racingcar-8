@@ -1,10 +1,11 @@
 package racingcar.controller;
 
 import java.util.List;
+import java.util.Map;
 import racingcar.domain.Race;
 import racingcar.factory.RaceFactory;
+import racingcar.service.RacingService;
 import racingcar.util.InputProcessor;
-import racingcar.util.RandomNumberGenerator;
 import racingcar.view.InputView;
 import racingcar.view.OutputView;
 
@@ -12,17 +13,17 @@ public class RacingController {
 
     private final InputView inputView;
     private final OutputView outputView;
-    private final InputProcessor inputProcessor;
     private final RaceFactory raceFactory;
-    private final RandomNumberGenerator randomNumberGenerator;
+    private final InputProcessor inputProcessor;
+    private final RacingService racingService;
 
-    public RacingController(InputView inputView, OutputView outputView, InputProcessor inputProcessor,
-                            RaceFactory raceFactory, RandomNumberGenerator randomNumberGenerator) {
+    public RacingController(InputView inputView, OutputView outputView, RaceFactory raceFactory,
+                            InputProcessor inputProcessor, RacingService racingService) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.inputProcessor = inputProcessor;
         this.raceFactory = raceFactory;
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.racingService = racingService;
     }
 
     public void run() {
@@ -33,11 +34,11 @@ public class RacingController {
 
         outputView.printResultHeader();
         for (int i = 0; i < tryCount; i++) {
-            race.playOneRound(randomNumberGenerator);
-            race.getCars().forEach(car -> outputView.printCarState(car.getName(), car.getDistance()));
+            Map<String, Integer> roundState = racingService.playOneRound(race);
+            roundState.forEach(outputView::printCarState);
             outputView.printBlankLine();
         }
 
-        outputView.printWinner(race.getWinners());
+        outputView.printWinner(racingService.getWinners(race));
     }
 }
