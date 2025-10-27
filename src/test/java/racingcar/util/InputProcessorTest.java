@@ -1,7 +1,7 @@
 package racingcar.util;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ public class InputProcessorTest {
     private InputProcessor inputProcessor;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         inputProcessor = new InputProcessor(
                 new CarNameParser(),
                 new CarNameValidator(),
@@ -25,13 +25,20 @@ public class InputProcessorTest {
     @Test
     @DisplayName("자동차 이름 정상값")
     void carNameValid() {
-        List<String> carNames = inputProcessor.parseAndValidateCarNames("pobii,woni");
+        // given
+        String input = "pobii,woni";
+
+        // when
+        List<String> carNames = inputProcessor.parseAndValidateCarNames(input);
+
+        // then
         assertThat(carNames).containsExactly("pobii", "woni");
     }
 
     @Test
-    @DisplayName("빈 문자열/공백 문자열을 입력하면 예외 발생")
+    @DisplayName("빈 문자열/공백 문자열 입력 시 예외 발생")
     void carNameBlank() {
+        // given & when & then
         assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(""))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(" "))
@@ -43,8 +50,9 @@ public class InputProcessorTest {
     }
 
     @Test
-    @DisplayName("앞뒤에 공백이 있으면 예외 발생")
+    @DisplayName("앞뒤에 공백이 포함된 이름 입력 시 예외 발생")
     void carNameTrim() {
+        // given & when & then
         assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames("pobi ,woni"))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(" pobi , woni"))
@@ -54,48 +62,64 @@ public class InputProcessorTest {
     }
 
     @Test
-    @DisplayName("5자 초과하면 예외 발생")
+    @DisplayName("이름의 길이가 5자 초과 시 예외 발생")
     void carNameLength() {
-        // 정상: 5자
-        List<String> carNames = inputProcessor.parseAndValidateCarNames("pobii,woni");
+        // given
+        String validInput = "pobii,woni";
+        String invalidInput = "pobiii,woni";
+
+        // when & then
+        List<String> carNames = inputProcessor.parseAndValidateCarNames(validInput);
         assertThat(carNames).containsExactly("pobii", "woni");
 
-        // 예외: 6자
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames("pobiii,woni"))
+        // when & then
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(invalidInput))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("중복되면 예외 발생")
+    @DisplayName("자동차 이름이 중복되는 경우 예외 발생")
     void carNameDuplicate() {
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames("pobi,pobi"))
+        // given
+        String input = "pobi,pobi";
+
+        // when & then
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(input))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("최소/최대 범위를 벗어나면 예외 발생")
+    @DisplayName("자동차의 수가 최소/최대 범위를 벗어나면 예외 발생")
     void carNameMinMax() {
-        // 최소(2) 미만
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames("pobi"))
-                .isInstanceOf(IllegalArgumentException.class);
+        // given
+        String tooFew = "pobi";
+        String tooMany = "c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11";
 
-        // 최대(10) 초과
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames("c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11"))
+        // when & then
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(tooFew))
                 .isInstanceOf(IllegalArgumentException.class);
-
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateCarNames(tooMany))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 
     @Test
     @DisplayName("시도 횟수 정상값")
     void tryCountValid() {
-        int tryCount = inputProcessor.parseAndValidateTryCount("5");
+        // given
+        String input = "5";
+
+        // when
+        int tryCount = inputProcessor.parseAndValidateTryCount(input);
+
+        // then
         assertThat(tryCount).isEqualTo(5);
     }
 
     @Test
     @DisplayName("정수가 아니면 예외 발생")
     void tryCountNonInteger() {
+        // given & when & then
         assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount("A"))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount("0.1"))
@@ -109,12 +133,14 @@ public class InputProcessorTest {
     @Test
     @DisplayName("최소/최대 범위를 벗어나면 예외 발생")
     void tryCountMinMax() {
-        // 최소(1) 미만
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount("0"))
-                .isInstanceOf(IllegalArgumentException.class);
+        // given
+        String tooSmall = "0";
+        String tooLarge = "101";
 
-        // 최대(100) 초과
-        assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount("101"))
+        // when & then
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount(tooSmall))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> inputProcessor.parseAndValidateTryCount(tooLarge))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
